@@ -63,11 +63,13 @@ export default function Metronome() {
                 <div className="flex flex-col items-center justify-center">
                     <label title="tempo">Tempo</label>
                     <input
-                        id="tempo"
-                        type="number"
+                        type="range"
+                        min={20}
+                        max={320}
                         value={tempo}
-                        onChange={(e: any) => setTempo(e.target.value)}
-                        className="border-2 border-gray-700 px-2"
+                        onChange={(e: any) => {
+                            setTempo(e.target.value)
+                        }}
                     />
                 </div>
                 <button
@@ -76,7 +78,6 @@ export default function Metronome() {
                 >
                     {!metronome ? 'Start Metronome' : 'Stop Metronome'}
                 </button>
-
                 <div className={`${tick ? 'bg-red-500' : 'bg-gray-500'} w-24 h-24`}></div>
             </div>
         </>
