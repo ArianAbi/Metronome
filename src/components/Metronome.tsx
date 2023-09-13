@@ -10,19 +10,18 @@ export default function Metronome() {
     const [tempo, setTempo] = useState(100);
     const [tick, setTick] = useState(false);
     const [bars, setBars] = useState(0);
+    const [timeSigniture, setTimeSignuture] = useState(4);
 
     const secondInMs = 60000;
     const tickDuration = secondInMs / tempo;
 
-    const timeSigniture = 4;
-
-    //on tempo change update the interval
+    //on tempo or time signuture change update the interval
     useEffect(() => {
         if (metronome) {
             clearInterval(metronome)
             setMetronome(setInterval(tickMetronome, tickDuration))
         }
-    }, [tempo])
+    }, [tempo, timeSigniture])
 
     function toggleMetronome() {
         //start if we dont have a metronome
@@ -85,6 +84,24 @@ export default function Metronome() {
                         }}
                     />
                 </div>
+
+                <div>
+                    <label>Time Signuture</label>
+                    <select
+                        value={timeSigniture}
+                        onChange={(e: any) => setTimeSignuture(e.target.value)}
+                    >
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                        <option value={6}>6</option>
+                        <option value={7}>7</option>
+                        <option value={8}>8</option>
+                    </select>
+                </div>
+
                 <button
                     className={`bg-green-700 py-2 px-4 rounded-lg text-white font-bold`}
                     onClick={() => toggleMetronome()}
