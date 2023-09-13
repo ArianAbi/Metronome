@@ -1,9 +1,12 @@
 import '../../global.css'
 import { useState, useEffect } from 'react'
+import rideSample from '/samples/ride/ride-sample.mp3'
+import rideSampleAccent from '/samples/ride/ride-sample-accent.wav'
 
 export default function Metronome() {
 
     const [metronome, setMetronome] = useState<null | number>(null);
+    const [tickCount, setTickCount] = useState(0);
     const [tempo, setTempo] = useState(100);
     const [tick, setTick] = useState(false);
 
@@ -14,14 +17,14 @@ export default function Metronome() {
     useEffect(() => {
         if (metronome) {
             clearInterval(metronome)
-            setMetronome(setInterval(metronomeTick, tickDuration))
+            setMetronome(setInterval(tickMetronome, tickDuration))
         }
     }, [tempo])
 
     function toggleMetronome() {
         //start if we dont have a metronome
         if (!metronome) {
-            setMetronome(setInterval(metronomeTick, tickDuration))
+            setMetronome(setInterval(tickMetronome, tickDuration))
 
             return
         }
@@ -32,12 +35,26 @@ export default function Metronome() {
     }
 
 
-    function metronomeTick() {
+    function tickMetronome() {
+        setTickCount(prevCount => prevCount == 4 ? 1 : prevCount + 1)
+
         setTick(true)
         setTimeout(() => {
             setTick(false)
         }, tickDuration / 4);
     }
+
+    //on tick count change play a sound
+    useEffect(() => {
+        console.log(tickCount);
+
+        //dont do anything if metronome is not toggled
+        if (!metronome) {
+            return
+        }
+        const soundToPlay = tickCount === 1 ? rideSample : rideSampleAccent
+        new Audio(soundToPlay).play()
+    }, [tickCount])
 
     return (
         <>
