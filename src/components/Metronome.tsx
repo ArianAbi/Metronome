@@ -69,7 +69,7 @@ export default function Metronome() {
             <div className="flex flex-col justify-center items-center gap-2">
                 <h2 className="font-bold">Metronome</h2>
                 <div className="flex flex-col items-center justify-center">
-                    <label title="tempo">Tempo</label>
+                    <label title="tempo">Tempo : {tempo}</label>
                     <input
                         type="range"
                         min={20}
