@@ -13,6 +13,8 @@ export default function Metronome() {
     const secondInMs = 60000;
     const tickDuration = secondInMs / tempo;
 
+    const timeSigniture = 4;
+
     //on tempo change update the interval
     useEffect(() => {
         if (metronome) {
@@ -36,7 +38,13 @@ export default function Metronome() {
 
 
     function tickMetronome() {
-        setTickCount(prevCount => prevCount == 4 ? 1 : prevCount + 1)
+        setTickCount(prevCount => {
+            if (prevCount >= timeSigniture) {
+                return 1
+            } else {
+                return prevCount + 1
+            }
+        })
 
         setTick(true)
         setTimeout(() => {
