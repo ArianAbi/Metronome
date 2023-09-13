@@ -9,6 +9,7 @@ export default function Metronome() {
     const [tickCount, setTickCount] = useState(0);
     const [tempo, setTempo] = useState(100);
     const [tick, setTick] = useState(false);
+    const [bars, setBars] = useState(0);
 
     const secondInMs = 60000;
     const tickDuration = secondInMs / tempo;
@@ -26,6 +27,7 @@ export default function Metronome() {
     function toggleMetronome() {
         //start if we dont have a metronome
         if (!metronome) {
+            setBars(0)
             setMetronome(setInterval(tickMetronome, tickDuration))
 
             return
@@ -40,6 +42,7 @@ export default function Metronome() {
     function tickMetronome() {
         setTickCount(prevCount => {
             if (prevCount >= timeSigniture) {
+                setBars(prevBar => prevBar + 1)
                 return 1
             } else {
                 return prevCount + 1
@@ -68,6 +71,7 @@ export default function Metronome() {
         <>
             <div className="flex flex-col justify-center items-center gap-2">
                 <h2 className="font-bold">Metronome</h2>
+                <div>bars : {bars}</div>
                 <div className="flex flex-col items-center justify-center">
                     <label title="tempo">Tempo : {tempo}</label>
                     <input
