@@ -78,7 +78,8 @@ export default function Metronome() {
                 >
                     {!metronome ? 'Start Metronome' : 'Stop Metronome'}
                 </button>
-                <div className={`${tick ? 'bg-red-500' : 'bg-gray-500'} w-24 h-24`}></div>
+
+                <div className={`${tick ? tickCount === 1 ? 'bg-purple-500' : 'bg-red-500' : 'bg-gray-500'} w-24 h-24`}></div>
             </div>
         </>
     )
