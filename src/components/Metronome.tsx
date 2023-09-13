@@ -34,6 +34,7 @@ export default function Metronome() {
         }
 
         //else stop the metronome
+        setTickCount(0)
         clearInterval(metronome)
         setMetronome(null)
     }
