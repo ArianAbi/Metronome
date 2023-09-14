@@ -7,7 +7,7 @@ export default function Metronome() {
 
     const [metronome, setMetronome] = useState<null | number>(null);
     const [tickCount, setTickCount] = useState(0);
-    const [tempo, setTempo] = useState(100);
+    const [tempo, setTempo] = useState(120);
     const [tick, setTick] = useState(false);
     const [bars, setBars] = useState(0);
     const [timeSigniture, setTimeSignuture] = useState(4);
@@ -91,7 +91,6 @@ export default function Metronome() {
                         value={timeSigniture}
                         onChange={(e: any) => setTimeSignuture(e.target.value)}
                     >
-                        <option value={1}>1</option>
                         <option value={2}>2</option>
                         <option value={3}>3</option>
                         <option value={4}>4</option>
@@ -110,6 +109,7 @@ export default function Metronome() {
                 </button>
 
                 <div className={`${tick ? tickCount === 1 ? 'bg-purple-500' : 'bg-red-500' : 'bg-gray-500'} w-24 h-24`}></div>
+                <div className={`w-24 h-24 bg-slate-800 ${metronome ? 'pendulum-swing' : ''}`}>pendulum</div>
             </div>
         </>
     )
