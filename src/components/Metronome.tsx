@@ -11,6 +11,7 @@ export default function Metronome() {
     const [tick, setTick] = useState(false);
     const [bars, setBars] = useState(0);
     const [timeSigniture, setTimeSignuture] = useState(4);
+    const [metronomeSound, setMetronomeSound] = useState<HTMLAudioElement>();
 
     const secondInMs = 60000;
     const tickDuration = secondInMs / tempo;
@@ -19,6 +20,8 @@ export default function Metronome() {
     useEffect(() => {
 
         document.documentElement.style.setProperty('--swing-duration', `${tickDuration}ms`);
+
+        setMetronomeSound(new Audio())
 
         if (metronome) {
             clearInterval(metronome)
@@ -51,21 +54,26 @@ export default function Metronome() {
                 return prevCount + 1
             }
         })
-
-        setTick(true)
-        setTimeout(() => {
-            setTick(false)
-        }, tickDuration / 4);
     }
 
     //on tick count change play a sound
     useEffect(() => {
         //dont do anything if metronome is not toggled
-        if (!metronome) {
+        if (!metronome || !metronomeSound) {
             return
         }
+
         const soundToPlay = tickCount === 1 ? rideSample : rideSampleAccent
-        new Audio(soundToPlay).play()
+
+        metronomeSound.src = soundToPlay
+        metronomeSound.pause()
+        metronomeSound.currentTime = 0
+        metronomeSound.play()
+        setTick(true)
+        setTimeout(() => {
+            setTick(false)
+        }, tickDuration / 4);
+
     }, [tickCount])
 
     return (
