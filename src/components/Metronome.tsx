@@ -102,6 +102,17 @@ export default function Metronome() {
                     </select>
                 </div>
 
+                <div className='bg-gray-200 flex gap-2 justify-between'>
+                    {Array.from({ length: timeSigniture }, (el, index) => (
+                        <div
+                            className={`text-center bg-gray-500 px-2 text-white ${tickCount === index + 1 ? 'bg-red-500 ' : ''}`}
+                            key={index}
+                        >
+                            Note
+                        </div>
+                    ))}
+                </div>
+
                 <button
                     className={`bg-green-700 py-2 px-4 rounded-lg text-white font-bold`}
                     onClick={() => toggleMetronome()}
