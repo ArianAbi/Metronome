@@ -15,8 +15,11 @@ export default function Metronome() {
     const secondInMs = 60000;
     const tickDuration = secondInMs / tempo;
 
-    //on tempo or time signuture change update the interval
+    //on tempo or time signuture change update the interval and swing-animation duration
     useEffect(() => {
+
+        document.documentElement.style.setProperty('--swing-duration', `${tickDuration}ms`);
+
         if (metronome) {
             clearInterval(metronome)
             setMetronome(setInterval(tickMetronome, tickDuration))
@@ -57,8 +60,6 @@ export default function Metronome() {
 
     //on tick count change play a sound
     useEffect(() => {
-        console.log(tickCount);
-
         //dont do anything if metronome is not toggled
         if (!metronome) {
             return
@@ -108,8 +109,7 @@ export default function Metronome() {
                     {!metronome ? 'Start Metronome' : 'Stop Metronome'}
                 </button>
 
-                <div className={`${tick ? tickCount === 1 ? 'bg-purple-500' : 'bg-red-500' : 'bg-gray-500'} w-24 h-24`}></div>
-                <div className={`w-24 h-24 bg-slate-800 ${metronome ? 'pendulum-swing' : ''}`}>pendulum</div>
+                <div className={`${tick ? tickCount === 1 ? 'bg-purple-500' : 'bg-red-500' : 'bg-gray-500'} w-24 h-24  ${metronome ? 'pendulum-swing' : ''}`}></div>
             </div>
         </>
     )

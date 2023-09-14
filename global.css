@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --swing-duration: 2000ms;
+}
+
 .pendulum-swing {
-    animation: swing 2000ms linear infinite;
+    animation: swing var(--swing-duration) linear infinite alternate;
 }
 
 @keyframes swing {
@@ -11,19 +15,7 @@
         transform: translateX(-100px);
     }
 
-    25% {
-        transform: translateX(100px);
-    }
-
-    50% {
-        transform: translateX(-100px);
-    }
-
-    75% {
-        transform: translateX(100px);
-    }
-
     100% {
-        transform: translateX(-100px);
+        transform: translateX(100px);
     }
 }
