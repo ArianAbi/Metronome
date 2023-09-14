@@ -63,6 +63,7 @@ export default function Metronome() {
             return
         }
 
+        metronomeSound.preload = "auto"
         const soundToPlay = tickCount === 1 ? rideSample : rideSampleAccent
 
         metronomeSound.src = soundToPlay
