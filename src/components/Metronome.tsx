@@ -1,4 +1,4 @@
-import '../../global.css'
+// import '../../global.css'
 import { useState, useEffect } from 'react'
 import rideSample from '/samples/ride/ride-sample.mp3'
 import rideSampleAccent from '/samples/ride/ride-sample-accent.wav'
