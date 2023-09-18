@@ -1,4 +1,3 @@
-// import '../../global.css'
 import { useState, useEffect, type ChangeEvent } from 'react'
 import rideSample from '/samples/ride/ride-sample.mp3'
 import rideSampleAccent from '/samples/ride/ride-sample-accent.wav'
@@ -86,6 +85,10 @@ export default function Metronome() {
 
     }, [tickCount])
 
+    function adjustTempo(value: number) {
+        setTempo(prevTempo => prevTempo + value)
+    }
+
     return (
         <>
             <div className="flex flex-col items-center gap-2 h-screen">
@@ -159,7 +162,10 @@ export default function Metronome() {
                 <div className='w-full bg-slate-400 flex flex-col justify-center items-center mt-auto'>
                     {/* tempo */}
                     <div className='w-full flex items-center justify-between py-2 px-12'>
-
+                        <div>
+                            <button className='w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full' onClick={() => adjustTempo(-5)}>-5</button>
+                            <button className='w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full' onClick={() => adjustTempo(-1)}>-1</button>
+                        </div>
 
                         <div className='w-full mx-6 text-center'>
                             <input
@@ -173,6 +179,10 @@ export default function Metronome() {
                             <p>tempo : {tempo}</p>
                         </div>
 
+                        <div>
+                            <button className='w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full' onClick={() => adjustTempo(5)}>+5</button>
+                            <button className='w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full' onClick={() => adjustTempo(1)}>+1</button>
+                        </div>
                     </div>
                 </div>
             </div>
