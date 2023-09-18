@@ -10,6 +10,7 @@ export default function Metronome() {
     const [tick, setTick] = useState(false);
     const [bars, setBars] = useState(0);
     const [timeSigniture, setTimeSignuture] = useState(4);
+    const [accelerando, setAccelerando] = useState(0);
 
     const [metronomeSound, setMetronomeSound] = useState<HTMLAudioElement>();
     const [metronomeAccentSound, setMetronomeAccentSound] = useState<HTMLAudioElement>();
@@ -53,6 +54,9 @@ export default function Metronome() {
     function tickMetronome() {
         setTickCount(prevCount => {
             if (prevCount >= timeSigniture) {
+                if (accelerando !== 0) {
+                    setTempo(prevTempo => prevTempo + accelerando / 10)
+                }
                 setBars(prevBar => prevBar + 1)
                 return 1
             } else {
@@ -184,6 +188,17 @@ export default function Metronome() {
                             <button className='w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full' onClick={() => adjustTempo(1)}>+1</button>
                         </div>
                     </div>
+
+                    <input
+                        className='w-[70%]'
+                        type='range'
+                        step={2}
+                        min={-10}
+                        max={10}
+                        value={accelerando}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => { setAccelerando(parseInt(e.target.value)) }}
+                    />
+                    <p>{accelerando / 10}</p>
                 </div>
             </div>
         </>
