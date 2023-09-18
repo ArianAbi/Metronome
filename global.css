@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
     --swing-duration: 2000ms;
 }
@@ -12,10 +8,20 @@
 
 @keyframes swing {
     0% {
+        transform: rotate(-30deg);
+    }
+
+    100% {
+        transform: rotate(30deg);
+    }
+}
+
+/* @keyframes swing {
+    0% {
         transform: translateX(-100px);
     }
 
     100% {
         transform: translateX(100px);
     }
-}
+} */

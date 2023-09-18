@@ -1,5 +1,5 @@
 // import '../../global.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ChangeEvent } from 'react'
 import rideSample from '/samples/ride/ride-sample.mp3'
 import rideSampleAccent from '/samples/ride/ride-sample-accent.wav'
 
@@ -88,48 +88,65 @@ export default function Metronome() {
 
     return (
         <>
-            <div className="flex flex-col justify-center items-center gap-2">
-                <h2 className="font-bold">Metronome</h2>
-                <div>bars : {bars}</div>
-                <div className="flex flex-col items-center justify-center">
-                    <label title="tempo">Tempo : {tempo}</label>
-                    <input
-                        type="range"
-                        min={20}
-                        max={320}
-                        value={tempo}
-                        onChange={(e: any) => {
-                            setTempo(e.target.value)
-                        }}
-                    />
-                </div>
+            <div className="flex flex-col items-center gap-2 h-screen">
+                {/* title */}
+                <h1 className="font-bold text-xl border-b-2 border-black pt-2 pb-3 px-4">
+                    Metronome
+                </h1>
 
-                <div>
-                    <label>Time Signuture</label>
-                    <select
-                        value={timeSigniture}
-                        onChange={(e: any) => setTimeSignuture(e.target.value)}
-                    >
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                        <option value={6}>6</option>
-                        <option value={7}>7</option>
-                        <option value={8}>8</option>
-                    </select>
-                </div>
+                {/* Notes */}
+                <div className='bg-gray-200 w-full px-12 h-16 flex gap-4 justify-center relative'>
 
-                <div className='bg-gray-200 flex gap-2 justify-between'>
+                    {/* time signuture */}
+                    <div className='bg-slate-900 text-white flex flex-col justify-between items-center px-2 absolute h-full left-0 text-lg'>
+                        <select
+                            className='bg-slate-900'
+                            value={timeSigniture}
+                            onChange={(e: any) => setTimeSignuture(e.target.value)}
+                        >
+                            <option value={2}>2</option>
+                            <option value={3}>3</option>
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                            <option value={6}>6</option>
+                            <option value={7}>7</option>
+                            <option value={8}>8</option>
+                        </select>
+                        <hr className='w-6' />
+                        <span>4</span>
+                    </div>
+
                     {Array.from({ length: timeSigniture }, (el, index) => (
                         <div
-                            className={`text-center bg-gray-500 px-2 text-white ${tickCount === index + 1 ? 'bg-red-500 ' : ''}`}
+                            className={`text-center px-2 text-white ${tickCount === index + 1 ? 'bg-red-500 ' : ''}`}
                             key={index}
                         >
-                            Note
+                            <img
+                                className='h-full'
+                                src='/quarter-note.svg'
+                            />
                         </div>
                     ))}
                 </div>
+
+
+                {/* options */}
+                <div className='w-full h-8 bg-slate-600 text-bold text-white text-center'>
+                    Options
+                </div>
+
+                {/* bar counter */}
+                <div>
+                    <p className={`text-4xl text-center ${tickCount === 1 ? "text-red-500" : ""}`}>
+                        {tickCount}
+                    </p>
+                    <p>
+                        {bars} bars
+                    </p>
+                </div>
+
+                {/* pendulum */}
+                <div className={`h-[200px] w-10 bg-gray-500 origin-bottom ${metronome ? 'pendulum-swing' : ''}`}></div>
 
                 <button
                     className={`bg-green-700 py-2 px-4 rounded-lg text-white font-bold`}
@@ -138,7 +155,26 @@ export default function Metronome() {
                     {!metronome ? 'Start Metronome' : 'Stop Metronome'}
                 </button>
 
-                <div className={`${tick ? tickCount === 1 ? 'bg-purple-500' : 'bg-red-500' : 'bg-gray-500'} w-24 h-24  ${metronome ? 'pendulum-swing' : ''}`}></div>
+                {/* controls */}
+                <div className='w-full bg-slate-400 flex flex-col justify-center items-center mt-auto'>
+                    {/* tempo */}
+                    <div className='w-full flex items-center justify-between py-2 px-12'>
+
+
+                        <div className='w-full mx-6 text-center'>
+                            <input
+                                className='w-full'
+                                type="range"
+                                min={20}
+                                max={320}
+                                value={tempo}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setTempo(parseInt(e.target.value))}
+                            />
+                            <p>tempo : {tempo}</p>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </>
     )
