@@ -1,27 +1,17 @@
 :root {
-    --swing-duration: 2000ms;
+  --swing-duration: 2000ms;
 }
 
 .pendulum-swing {
-    animation: swing var(--swing-duration) linear infinite alternate;
+  animation: swing var(--swing-duration) linear infinite alternate;
 }
 
 @keyframes swing {
-    0% {
-        transform: rotate(-30deg);
-    }
+  0% {
+    transform: rotate(-20deg) translateY(1rem);
+  }
 
-    100% {
-        transform: rotate(30deg);
-    }
+  100% {
+    transform: rotate(20deg) translateY(1rem);
+  }
 }
-
-/* @keyframes swing {
-    0% {
-        transform: translateX(-100px);
-    }
-
-    100% {
-        transform: translateX(100px);
-    }
-} */
