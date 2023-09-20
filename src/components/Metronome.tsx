@@ -1,6 +1,7 @@
 import { useState, useEffect, type ChangeEvent } from 'react';
 import rideSample from '/samples/ride/ride-sample.mp3';
 import rideSampleAccent from '/samples/ride/ride-sample-accent.wav';
+import '../../animation.css';
 
 export default function Metronome() {
   const minTempo = 20;
