@@ -103,14 +103,14 @@ export default function Metronome() {
 
   return (
     <>
-      <div className="flex flex-col items-center h-screen">
+      <div className="flex flex-col items-center h-screen max-w-screen-md mx-auto">
         {/* title */}
-        <h1 className="font-bold text-xl border-b-2 border-black pt-2 pb-3 px-4">
+        <h1 className="font-bold text-xl text-center border-b-2 border-black pt-2 pb-3 w-[60%] md:w-full">
           Metronome
         </h1>
 
         {/* Notes */}
-        <div className="bg-gray-200 w-full px-12 h-16 flex gap-4 justify-center relative">
+        <div className="bg-gray-200 w-full pl-14 pr-4 sm:pr-12 h-16 flex gap-4 justify-around relative mt-4">
           {/* time signuture */}
           <div className="bg-slate-900 text-white flex flex-col justify-between items-center px-2 absolute h-full left-0 text-lg">
             <select
@@ -132,19 +132,13 @@ export default function Metronome() {
 
           {Array.from({ length: timeSigniture }, (el, index) => (
             <div
-              className={`text-center px-2 text-white ${
-                tickCount === index + 1 ? 'bg-red-500 ' : ''
-              }`}
+              className={`text-center px-0 text-white my-2
+              ${tickCount === index + 1 ? 'bg-red-500 ' : ''}`}
               key={index}
             >
               <img className="h-full" src="/quarter-note.svg" />
             </div>
           ))}
-        </div>
-
-        {/* options */}
-        <div className="w-full h-8 bg-slate-600 text-bold text-white text-center">
-          Options
         </div>
 
         {/* bar counter */}
@@ -168,7 +162,7 @@ export default function Metronome() {
 
         {/* pendulum */}
         <div
-          className={`h-[300px] w-6 bg-gray-500 mt-auto origin-bottom relative translate-y-4
+          className={`h-[300px] w-6 bg-gray-500 mt-auto origin-bottom relative translate-y-4 sm:scale-110 md:scale-125
           ${metronome ? 'pendulum-swing' : ''}`}
         >
           {/* pendulum weight */}
@@ -179,7 +173,7 @@ export default function Metronome() {
         </div>
 
         {/* controls */}
-        <div className="w-full bg-slate-400 flex flex-col justify-center items-center z-10">
+        <div className="w-full bg-slate-400 flex flex-col justify-center items-center pt-4 pb-8 z-10 md:rounded-t-3xl">
           {/* tempo */}
           <div className="w-full flex items-center justify-between py-2 px-12">
             <div>

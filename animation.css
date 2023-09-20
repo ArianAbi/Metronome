@@ -8,10 +8,10 @@
 
 @keyframes swing {
   0% {
-    transform: rotate(-20deg) translateY(1rem);
+    rotate: -20deg;
   }
 
   100% {
-    transform: rotate(20deg) translateY(1rem);
+    rotate: 20deg;
   }
 }
