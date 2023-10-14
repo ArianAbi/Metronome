@@ -44,6 +44,10 @@ export default function Metronome() {
     if (metronome) {
       clearInterval(metronome);
       setMetronome(null);
+
+      setTimeout(() => {
+        setMetronome(setInterval(tickMetronome,tickDuration))
+      }, 10);
     }
   }, [tempo, timeSigniture]);
 
