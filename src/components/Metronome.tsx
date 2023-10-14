@@ -1,6 +1,6 @@
 import { useState, useEffect, type ChangeEvent } from 'react';
-import rideSample from '/samples/ride/ride-sample.mp3';
-import rideSampleAccent from '/samples/ride/ride-sample-accent.wav';
+import rideSample from '/samples/ride/new-ride.wav';
+import rideSampleAccent from '/samples/ride/new-ride-accent.wav';
 import '../../animation.css';
 
 export default function Metronome() {
@@ -13,11 +13,11 @@ export default function Metronome() {
   const [tempo, setTempo] = useState(120);
   const [bars, setBars] = useState(0);
   const [timeSigniture, setTimeSignuture] = useState(4);
-  const [accelerando, setAccelerando] = useState(0);
 
   const [metronomeSound, setMetronomeSound] = useState<HTMLAudioElement>();
   const [metronomeAccentSound, setMetronomeAccentSound] =
     useState<HTMLAudioElement>();
+  const [timeSigDialogOpen, setTimeSigDialogOpen] = useState(false);
 
   const secondInMs = 60000;
   const tickDuration = secondInMs / tempo;
@@ -43,7 +43,7 @@ export default function Metronome() {
     // reset the metronome
     if (metronome) {
       clearInterval(metronome);
-      setMetronome(setInterval(tickMetronome, tickDuration));
+      setMetronome(null);
     }
   }, [tempo, timeSigniture]);
 
@@ -65,15 +65,16 @@ export default function Metronome() {
   function tickMetronome() {
     setTickCount((prevCount) => {
       if (prevCount >= timeSigniture) {
-        if (accelerando !== 0) {
-          setTempo((prevTempo) => prevTempo + accelerando / 10);
-        }
         setBars((prevBar) => prevBar + 1);
         return 1;
       } else {
         return prevCount + 1;
       }
     });
+  }
+
+  function handleTimeSignutureChange(timeSigniture: number) {
+    setTimeSignuture(timeSigniture);
   }
 
   //on tick count change play a sound
@@ -95,7 +96,7 @@ export default function Metronome() {
   }, [tickCount]);
 
   function adjustTempo(value: number) {
-    if (tempo >= maxTempo || tempo <= minTempo) {
+    if (tempo > maxTempo || tempo < minTempo) {
       return;
     }
     setTempo((prevTempo) => prevTempo + value);
@@ -103,49 +104,110 @@ export default function Metronome() {
 
   return (
     <>
-      <div className="flex flex-col items-center h-screen max-w-screen-md mx-auto">
+      <div className="mx-auto flex h-screen max-w-screen-md flex-col items-center">
         {/* title */}
-        <h1 className="font-bold text-xl text-center border-b-2 border-black pt-2 pb-3 w-[60%] md:w-full">
+        <h1 className="z-50 mb-2 w-[60%] border-b-2 border-white py-3 text-center text-xl font-bold md:w-full">
           Metronome
         </h1>
 
+        {/* time signuture dialog box */}
+        {timeSigDialogOpen && (
+          <div
+            onClick={() => setTimeSigDialogOpen(false)}
+            className="absolute left-0 top-0 z-[99] flex h-full w-full items-center justify-center bg-black bg-opacity-25 backdrop-blur-sm"
+          >
+            {/* main content */}
+            <div
+              className="flex w-[250px] flex-col items-center justify-center gap-3 rounded-md bg-black bg-opacity-95 px-4 pt-4 pb-6"
+              style={{boxShadow:"0px 0px 5px 2px #ffffff5a"}}
+              onClick={(e) => e.stopPropagation()}
+              >
+              <h1 className="mb-4 text-lg font-bold tracking-wide">Time Signuture</h1>
+
+              {Array.from({ length: 7 }, (el, index) => (
+                <div
+                  className="flex w-full gap-2 text-lg font-bold"
+                  key={index}
+                >
+                  <input
+                    type="radio"
+                    name="timeSig"
+                    checked={index + 2 === timeSigniture}
+                    value={index + 2}
+                    onChange={(e) =>
+                      handleTimeSignutureChange(parseInt(e.target.value))
+                    }
+                  />
+                  <label title={`${index + 2}`}>{index + 2}</label>
+                  <img src="/quarter-note.svg" className="h-5"/>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Notes */}
-        <div className="bg-gray-200 w-full pl-14 pr-4 sm:pr-12 h-16 flex gap-4 justify-around relative mt-4">
+        <div className=" relative z-50 mt-4 flex h-12 w-full justify-around  gap-4 pl-[4.5rem] pr-4 sm:pr-12 md:h-16">
           {/* time signuture */}
-          <div className="bg-slate-900 text-white flex flex-col justify-between items-center px-2 absolute h-full left-0 text-lg">
-            <select
-              className="bg-slate-900"
-              value={timeSigniture}
-              onChange={(e: any) => setTimeSignuture(e.target.value)}
+          <div className="absolute left-0 flex  h-full flex-col items-center  justify-between border-r-[1px] text-lg text-white">
+            <button
+              onClick={() => setTimeSigDialogOpen(true)}
+              className="w-16 text-center"
             >
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-              <option value={6}>6</option>
-              <option value={7}>7</option>
-              <option value={8}>8</option>
-            </select>
-            <hr className="w-6" />
+              {timeSigniture}
+            </button>
+
+            {/* select arrow  */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={3}
+              stroke="currentColor"
+              className="absolute right-1 top-1/4 h-6 w-4 -translate-y-1/2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+            <hr className="w-3/5" />
             <span>4</span>
           </div>
 
           {Array.from({ length: timeSigniture }, (el, index) => (
             <div
-              className={`text-center px-0 text-white my-2
-              ${tickCount === index + 1 ? 'bg-red-500 ' : ''}`}
+              className="relative my-2 px-0 text-center text-white"
               key={index}
             >
-              <img className="h-full" src="/quarter-note.svg" />
+              {/* note svg */}
+              <img className="h-full " src="/quarter-note.svg" />
+
+              {/* up arrow svg */}
+              {tickCount === index + 1 && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="absolute z-[-1] h-6 w-6"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M11.47 7.72a.75.75 0 011.06 0l7.5 7.5a.75.75 0 11-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 01-1.06-1.06l7.5-7.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
           ))}
         </div>
 
         {/* bar counter */}
-        <div>
+        <div className="z-50 mt-6">
           <p
-            className={`text-4xl text-center ${
-              tickCount === 1 ? 'text-red-500' : ''
+            className={`text-center text-4xl ${
+              tickCount === 1 ? 'text-cyan-400' : ''
             }`}
           >
             {tickCount}
@@ -153,45 +215,72 @@ export default function Metronome() {
           <p>{bars} bars</p>
         </div>
 
-        <button
-          className={`bg-green-700 py-2 px-4 rounded-lg text-white font-bold`}
-          onClick={() => toggleMetronome()}
-        >
-          {!metronome ? 'Start Metronome' : 'Stop Metronome'}
-        </button>
+        <div className="relative h-full w-full origin-bottom scale-95 sm:scale-100 lg:scale-125">
+          {/* play button */}
+          <button
+            className={`absolute left-2/4 top-2/4 z-50 flex h-full w-full -translate-x-2/4 -translate-y-2/4 items-center justify-center
+            text-2xl font-bold text-white backdrop-blur-sm transition-opacity duration-300
+          ${metronome ? 'opacity-0' : 'opacity-100'}`}
+            onClick={() => toggleMetronome()}
+          >
+            {/* round */}
+            <div className="flex aspect-square w-[220px] items-center justify-center rounded-full border-[10px]">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-16 w-16"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </button>
 
-        {/* pendulum */}
-        <div
-          className={`h-[300px] w-6 bg-gray-500 mt-auto origin-bottom relative translate-y-4 sm:scale-110 md:scale-125
-          ${metronome ? 'pendulum-swing' : ''}`}
-        >
-          {/* pendulum weight */}
+          {/* pendulum */}
           <div
-            className="w-10 h-10 absolute left-[50%] translate-x-[-50%] bg-black"
-            style={{ top: `${pendulumWeightPosition}%` }}
-          ></div>
+            className={`absolute bottom-0 left-2/4 mt-auto h-[350px] w-2 origin-bottom -translate-x-2/4 translate-y-4 bg-stone-400
+          ${metronome ? 'pendulum-swing' : ''}`}
+          >
+            {/* pendulum weight */}
+            <img
+              className={`absolute left-2/4 top-[${pendulumWeightPosition}%] w-[50px] max-w-none -translate-x-2/4`}
+              style={{ top: `${pendulumWeightPosition}%` }}
+              src="/pendulum-weight.svg"
+              alt="pendulum-weight"
+            />
+          </div>
+          {/* metronome background */}
+          <img
+            className="absolute bottom-0 left-2/4 -z-10 max-w-none -translate-x-2/4"
+            src="metronome-background.svg"
+            alt="metronome background"
+          />
         </div>
 
         {/* controls */}
-        <div className="w-full bg-slate-400 flex flex-col justify-center items-center pt-4 pb-8 z-10 md:rounded-t-3xl">
+        <div className="z-10 flex w-full flex-col items-center justify-center bg-[#001b2a] pb-4 pt-4 md:rounded-t-3xl">
           {/* tempo */}
-          <div className="w-full flex items-center justify-between py-2 px-12">
-            <div>
+          <div className="flex h-full w-full items-center justify-between px-12 py-2">
+            <div className="divide-y-2">
               <button
-                className="w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full"
+                className="mb-2 h-[35px] w-[35px] text-white"
                 onClick={() => adjustTempo(-5)}
               >
                 -5
               </button>
               <button
-                className="w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full"
+                className="mb-2 h-[35px] w-[35px] text-white"
                 onClick={() => adjustTempo(-1)}
               >
                 -1
               </button>
             </div>
 
-            <div className="w-full mx-6 text-center">
+            <div className="mx-6 w-full text-center">
               <input
                 className="w-full"
                 type="range"
@@ -205,34 +294,21 @@ export default function Metronome() {
               <p>tempo : {tempo}</p>
             </div>
 
-            <div>
+            <div className="divide-y-2">
               <button
-                className="w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full"
+                className="mb-2 h-[35px] w-[35px] text-white"
                 onClick={() => adjustTempo(5)}
               >
                 +5
               </button>
               <button
-                className="w-[35px] h-[35px] bg-slate-500 mb-2 border-2 text-white rounded-full"
+                className="mb-2 h-[35px] w-[35px] text-white"
                 onClick={() => adjustTempo(1)}
               >
                 +1
               </button>
             </div>
           </div>
-
-          <input
-            className="w-[70%]"
-            type="range"
-            step={2}
-            min={-10}
-            max={10}
-            value={accelerando}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setAccelerando(parseInt(e.target.value));
-            }}
-          />
-          <p>Accelerando : {accelerando / 10}</p>
         </div>
       </div>
     </>
