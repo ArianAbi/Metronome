@@ -2,7 +2,6 @@ import { useState, useEffect, type ChangeEvent } from 'react';
 import { AnimatePresence , motion} from 'framer-motion';
 import rideSample from '/samples/ride/new-ride.wav';
 import rideSampleAccent from '/samples/ride/new-ride-accent.wav';
-import '../../animation.css';
 
 export default function Metronome() {
   const minTempo = 20;
@@ -29,17 +28,11 @@ export default function Metronome() {
     setMetronomeAccentSound(new Audio(rideSampleAccent));
   }, []);
 
-  //on tempo or time signuture change update the interval and swing-animation duration
+  //on tempo or time signuture change update the interval
   useEffect(() => {
     // calculate pendulum position
     const ratio = 0.7;
     setPendulumWeightPosition(((tempo * 100) / maxTempo) * ratio);
-
-    // update the swing animation
-    document.documentElement.style.setProperty(
-      '--swing-duration',
-      `${tickDuration}ms`,
-    );
 
     // reset the metronome
     if (metronome) {
@@ -253,9 +246,16 @@ export default function Metronome() {
           </button>
 
           {/* pendulum */}
-          <div
-            className={`absolute bottom-0 left-2/4 mt-auto h-[350px] w-2 origin-bottom -translate-x-2/4 translate-y-4 bg-stone-400
-          ${metronome ? 'pendulum-swing' : ''}`}
+          <motion.div
+            key={tempo}
+            className="absolute bottom-0 left-2/4 mt-auto h-[350px] w-2 origin-bottom -translate-x-2/4 translate-y-4 bg-stone-400"
+            initial={{rotate:0}}
+            animate={{rotate : metronome ? [-20,20] : 0}}
+            transition={{
+              repeat:metronome ? Infinity : 0,
+              duration:(60 / tempo),
+              repeatType:"mirror"
+          }}
           >
             {/* pendulum weight */}
             <img
@@ -264,7 +264,7 @@ export default function Metronome() {
               src="/pendulum-weight.svg"
               alt="pendulum-weight"
             />
-          </div>
+          </motion.div>
           {/* metronome background */}
           <img
             className="absolute bottom-0 left-2/4 -z-10 max-w-none -translate-x-2/4"
