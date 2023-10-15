@@ -142,15 +142,14 @@ export default function Metronome() {
                 <div
                   className="flex w-full gap-2 text-lg font-bold"
                   key={index}
+                  onClick={()=>handleTimeSignutureChange(index+2)}
                 >
                   <input
                     type="radio"
                     name="timeSig"
                     checked={index + 2 === timeSigniture}
                     value={index + 2}
-                    onChange={(e) =>
-                      handleTimeSignutureChange(parseInt(e.target.value))
-                    }
+                    readOnly
                   />
                   <label title={`${index + 2}`}>{index + 2}</label>
                   <img src="/quarter-note.svg" className="h-5"/>
