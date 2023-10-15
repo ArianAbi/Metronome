@@ -1,4 +1,5 @@
 import { useState, useEffect, type ChangeEvent } from 'react';
+import { AnimatePresence , motion} from 'framer-motion';
 import rideSample from '/samples/ride/new-ride.wav';
 import rideSampleAccent from '/samples/ride/new-ride-accent.wav';
 import '../../animation.css';
@@ -115,15 +116,24 @@ export default function Metronome() {
         </h1>
 
         {/* time signuture dialog box */}
+        <AnimatePresence>
         {timeSigDialogOpen && (
-          <div
-            onClick={() => setTimeSigDialogOpen(false)}
-            className="absolute left-0 top-0 z-[99] flex h-full w-full items-center justify-center bg-black bg-opacity-25 backdrop-blur-sm"
-          >
+            <motion.div
+              onClick={() => setTimeSigDialogOpen(false)}
+              className="absolute left-0 top-0 z-[99] flex h-full w-full items-center justify-center bg-black bg-opacity-25 backdrop-blur-sm"
+              initial={{opacity:0}}
+              animate={{opacity:1}}
+              exit={{opacity:0}}
+              transition={{duration:0.2}}
+              >
             {/* main content */}
-            <div
+            <motion.div
               className="flex w-[250px] flex-col items-center justify-center gap-3 rounded-md bg-black bg-opacity-95 px-4 pt-4 pb-6"
               style={{boxShadow:"0px 0px 5px 2px #ffffff5a"}}
+              initial={{scale:0.2}}
+              animate={{scale:1}}
+              exit={{scale:0}}
+              transition={{duration:0.2}}
               onClick={(e) => e.stopPropagation()}
               >
               <h1 className="mb-4 text-lg font-bold tracking-wide">Time Signuture</h1>
@@ -146,20 +156,19 @@ export default function Metronome() {
                   <img src="/quarter-note.svg" className="h-5"/>
                 </div>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+            </AnimatePresence>
 
         {/* Notes */}
         <div className=" relative z-50 mt-4 flex h-12 w-full justify-around  gap-4 pl-[4.5rem] pr-4 sm:pr-12 md:h-16">
           {/* time signuture */}
-          <div className="absolute left-0 flex  h-full flex-col items-center  justify-between border-r-[1px] text-lg text-white">
             <button
               onClick={() => setTimeSigDialogOpen(true)}
-              className="w-16 text-center"
+              className="absolute left-0 flex  h-full flex-col items-center  justify-between border-r-[1px] text-lg text-white w-16 text-center"
             >
               {timeSigniture}
-            </button>
 
             {/* select arrow  */}
             <svg
@@ -174,11 +183,11 @@ export default function Metronome() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-              />
+                />
             </svg>
             <hr className="w-3/5" />
             <span>4</span>
-          </div>
+            </button>
 
           {Array.from({ length: timeSigniture }, (el, index) => (
             <div
