@@ -2,10 +2,10 @@ import { useState, useEffect, type ChangeEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import rideSample from '/samples/ride/new-ride.wav';
 import rideSampleAccent from '/samples/ride/new-ride-accent.wav';
-import Controls from './Controls';
-import { Pendulum, PendulumContainer } from './Pendulum';
-import DialogBox from './DialogBox';
-import NotesSection from './NotesSection';
+import Controls from '../components/Controls';
+import { Pendulum, PendulumContainer } from '../components/Pendulum';
+import DialogBox from '../components/DialogBox';
+import NotesSection from '../components/NotesSection';
 
 export default function Metronome() {
   const minTempo = 20;
