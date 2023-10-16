@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import rideSample from '/samples/ride/new-ride.wav';
 import rideSampleAccent from '/samples/ride/new-ride-accent.wav';
 import Controls from './Controls';
+import Pendulum from './Pendulum';
 
 export default function Metronome() {
   const minTempo = 20;
@@ -249,30 +250,10 @@ export default function Metronome() {
           </button>
 
           {/* pendulum */}
-          <motion.div
-            key={tempo}
-            className="absolute bottom-0 left-2/4 mt-auto h-[350px] w-2 origin-bottom -translate-x-2/4 translate-y-4 bg-stone-400"
-            initial={{ rotate: 0 }}
-            animate={{ rotate: metronome ? [-20, 20] : 0 }}
-            transition={{
-              repeat: metronome ? Infinity : 0,
-              duration: 60 / tempo,
-              repeatType: 'mirror',
-            }}
-          >
-            {/* pendulum weight */}
-            <img
-              className={`absolute left-2/4 top-[${pendulumWeightPosition}%] w-[50px] max-w-none -translate-x-2/4`}
-              style={{ top: `${pendulumWeightPosition}%` }}
-              src="/pendulum-weight.svg"
-              alt="pendulum-weight"
-            />
-          </motion.div>
-          {/* metronome background */}
-          <img
-            className="absolute bottom-0 left-2/4 -z-10 max-w-none -translate-x-2/4"
-            src="metronome-background.svg"
-            alt="metronome background"
+          <Pendulum
+            tempo={tempo}
+            playing={metronome ? true : false}
+            pendulumWeightPosition={pendulumWeightPosition}
           />
         </div>
 
