@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import type { ReactNode } from 'react';
 
 interface Pendulum {
   tempo: number;
@@ -6,11 +7,7 @@ interface Pendulum {
   pendulumWeightPosition: number;
 }
 
-export default function Pendulum({
-  tempo,
-  playing,
-  pendulumWeightPosition,
-}: Pendulum) {
+export function Pendulum({ tempo, playing, pendulumWeightPosition }: Pendulum) {
   return (
     <>
       <motion.div
@@ -39,5 +36,13 @@ export default function Pendulum({
         alt="metronome background"
       />
     </>
+  );
+}
+
+export function PendulumContainer({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative h-full w-full origin-bottom scale-95 sm:scale-100 lg:scale-125">
+      {children}
+    </div>
   );
 }

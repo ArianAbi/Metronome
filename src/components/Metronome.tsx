@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import rideSample from '/samples/ride/new-ride.wav';
 import rideSampleAccent from '/samples/ride/new-ride-accent.wav';
 import Controls from './Controls';
-import Pendulum from './Pendulum';
+import { Pendulum, PendulumContainer } from './Pendulum';
 import DialogBox from './DialogBox';
 import NotesSection from './NotesSection';
 
@@ -155,12 +155,12 @@ export default function Metronome() {
           <p>{bars} bars</p>
         </div>
 
-        <div className="relative h-full w-full origin-bottom scale-95 sm:scale-100 lg:scale-125">
+        <PendulumContainer>
           {/* play button */}
           <button
             className={`absolute left-2/4 top-2/4 z-50 flex h-full w-full -translate-x-2/4 -translate-y-2/4 items-center justify-center
             text-2xl font-bold text-white backdrop-blur-sm transition-opacity duration-300
-          ${metronome ? 'opacity-0' : 'opacity-100'}`}
+            ${metronome ? 'opacity-0' : 'opacity-100'}`}
             onClick={() => toggleMetronome()}
           >
             {/* round */}
@@ -185,7 +185,7 @@ export default function Metronome() {
             playing={metronome ? true : false}
             pendulumWeightPosition={pendulumWeightPosition}
           />
-        </div>
+        </PendulumContainer>
 
         {/* controls */}
         <Controls
