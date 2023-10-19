@@ -19,6 +19,7 @@ export function Pendulum({ tempo, playing, pendulumWeightPosition }: Pendulum) {
           repeat: playing ? Infinity : 0,
           duration: 60 / tempo,
           repeatType: 'mirror',
+          ease: 'easeIn',
         }}
       >
         {/* pendulum weight */}
