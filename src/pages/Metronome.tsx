@@ -6,6 +6,7 @@ import Controls from '../components/Controls';
 import { Pendulum, PendulumContainer } from '../components/Pendulum';
 import DialogBox from '../components/DialogBox';
 import NotesSection from '../components/NotesSection';
+import Settings from '../components/Settings';
 
 export default function Metronome() {
   const minTempo = 20;
@@ -22,9 +23,10 @@ export default function Metronome() {
   const [metronomeAccentSound, setMetronomeAccentSound] =
     useState<HTMLAudioElement>();
   const [timeSigDialogOpen, setTimeSigDialogOpen] = useState(false);
+  const [settingDialogOpen, setSettingDialogOpen] = useState(false);
 
-  const secondInMs = 60000;
-  const tickDuration = secondInMs / tempo;
+  const msInMinute = 60000;
+  const tickDuration = msInMinute / tempo;
 
   //set the audios
   useEffect(() => {
@@ -115,7 +117,7 @@ export default function Metronome() {
 
           <h1>Metronome</h1>
 
-          <button title="settings">
+          <button onClick={() => setSettingDialogOpen(true)} title="settings">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -132,6 +134,13 @@ export default function Metronome() {
           </button>
         </header>
         <hr className="w-4/6 border-[1px] border-white md:w-full" />
+
+        {/* settings dialog box */}
+        <DialogBox open={settingDialogOpen} setOpen={setSettingDialogOpen}>
+          <h1 className="mb-4 text-lg font-bold tracking-wide">Settings</h1>
+
+          <Settings />
+        </DialogBox>
 
         {/* time signuture dialog box */}
         <DialogBox open={timeSigDialogOpen} setOpen={setTimeSigDialogOpen}>
